@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FLUFFY ROBOT · 一个有温度的创造者主页 —— 设计、工程与一点点温柔的科技。" />
+  <meta name="author" content="Yuan" />
+  <title>FLUFFY ROBOT · Yuan 的主页</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader__inner">
+      <div class="preloader__robot">🤖</div>
+      <div class="preloader__bar"><span></span></div>
+    </div>
+  </div>
+
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <!-- Aurora background -->
+  <div class="aurora" aria-hidden="true">
+    <span class="aurora__orb aurora__orb--1"></span>
+    <span class="aurora__orb aurora__orb--2"></span>
+    <span class="aurora__orb aurora__orb--3"></span>
+    <div class="aurora__grid"></div>
+    <div class="aurora__noise"></div>
+  </div>
+
+  <!-- Nav -->
+  <header class="nav" id="nav">
+    <a href="#home" class="nav__brand">
+      <span class="nav__logo">🤖</span>
+      <span class="nav__brand-text">FLUFFY<span>ROBOT</span></span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#home" class="nav__link">首页</a>
+      <a href="#about" class="nav__link">关于</a>
+      <a href="#skills" class="nav__link">技能</a>
+      <a href="#work" class="nav__link">作品</a>
+      <a href="#journey" class="nav__link">历程</a>
+      <a href="#contact" class="nav__link">联系</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换深浅色">
+        <span class="theme-toggle__icon">🌙</span>
+      </button>
+      <button class="nav__burger" id="navBurger" aria-label="菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="home">
+      <div class="hero__inner">
+        <p class="hero__eyebrow reveal">// 你好，我是 Yuan</p>
+        <h1 class="hero__title">
+          <span class="hero__line reveal">我用代码与设计并存</span>
+          <span class="hero__line hero__line--accent">
+            <span id="typed" class="typed"></span><span class="caret">|</span>
+          </span>
+        </h1>
+        <p class="hero__sub reveal">
+          一个有温度的创造者。在 <strong>产品体验</strong>、<strong>前端工程</strong> 与
+          <strong>交互设计</strong> 之间，造一些让人会心一笑的、温柔的科技。
+        </p>
+        <div class="hero__cta reveal">
+          <a href="#work" class="btn btn--primary">看看作品 <span>→</span></a>
+          <a href="#contact" class="btn btn--ghost">一起聊聊</a>
+        </div>
+        <div class="hero__stats reveal">
+          <div class="stat"><b data-count="6">0</b><span>年经验</span></div>
+          <div class="stat"><b data-count="42">0</b><span>个项目</span></div>
+          <div class="stat"><b data-count="18">0</b><span>开源库</span></div>
+          <div class="stat"><b data-count="99">0</b><span>% 咖啡驱动</span></div>
+        </div>
+      </div>
+      <a href="#about" class="hero__scroll" aria-label="向下滚动">
+        <span class="hero__scroll-dot"></span>
+      </a>
+    </section>
+
+    <!-- About -->
+    <section class="section about" id="about">
+      <div class="section__head reveal">
+        <span class="section__index">01</span>
+        <h2 class="section__title">关于我</h2>
+        <p class="section__lead">相信技术应当温柔，复杂应当被化简。</p>
+      </div>
+      <div class="about__grid">
+        <div class="about__card glass reveal">
+          <div class="about__avatar">🤖</div>
+          <h3>Yuan · 创造者</h3>
+          <p>从一行 CSS 到一整套设计系统，我享受把模糊的想法打磨成顺滑体验的全过程。白天写工程，夜里画草图。</p>
+          <ul class="about__tags">
+            <li>产品思维</li><li>前端工程</li><li>动效设计</li><li>设计系统</li>
+          </ul>
+        </div>
+        <div class="about__text reveal">
+          <p>我喜欢把「难用」变成「理所应当」。过去几年里，我做过 <em>消费级 App</em>、<em>开发者工具</em> 和一堆奇怪但可爱的周末项目。</p>
+          <p>现在，我把大部分精力放在 <strong>Fluffy Robot</strong> —— 一个关于「让科技更靠近人」的小实验场。</p>
+          <div class="about__facts">
+            <div><span>🌍 坐标</span><b>地球 · 远程优先</b></div>
+            <div><span>🛠 常用</span><b>TypeScript · React · Figma</b></div>
+            <div><span>💡 信条</span><b>少即是多，慢即是快</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="section skills" id="skills">
+      <div class="section__head reveal">
+        <span class="section__index">02</span>
+        <h2 class="section__title">技能栈</h2>
+        <p class="section__lead">不追求全栈通才，只把擅长的事做到顺手。</p>
+      </div>
+      <div class="skills__grid">
+        <article class="skill glass reveal">
+          <header><span class="skill__icon">⚡</span><h3>前端工程</h3></header>
+          <div class="bar"><span data-w="92%"></span></div>
+          <p>React · TypeScript · Vite · 动效与性能优化</p>
+        </article>
+        <article class="skill glass reveal">
+          <header><span class="skill__icon">🎨</span><h3>产品设计</h3></header>
+          <div class="bar"><span data-w="88%"></span></div>
+          <p>Figma · 设计系统 · 交互原型 · 可用性</p>
+        </article>
+        <article class="skill glass reveal">
+          <header><span class="skill__icon">🧠</span><h3>体验策略</h3></header>
+          <div class="bar"><span data-w="80%"></span></div>
+          <p>信息架构 · 用户旅程 · 数据驱动迭代</p>
+        </article>
+        <article class="skill glass reveal">
+          <header><span class="skill__icon">🔧</span><h3>工程化</h3></header>
+          <div class="bar"><span data-w="76%"></span></div>
+          <p>Node · CI/CD · 组件库 · 文档体系</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section class="section work" id="work">
+      <div class="section__head reveal">
+        <span class="section__index">03</span>
+        <h2 class="section__title">精选作品</h2>
+        <p class="section__lead">一些我乐意拿出来讲的项目。</p>
+      </div>
+      <div class="work__grid">
+        <article class="project glass reveal" data-tilt>
+          <div class="project__thumb project__thumb--a"><span>🌌</span></div>
+          <div class="project__body">
+            <h3>Aurora UI</h3>
+            <p>一套以「光」为灵感的玻璃拟态组件库，开箱即用的动效与主题。</p>
+            <div class="project__tags"><span>React</span><span>CSS</span><span>Design System</span></div>
+          </div>
+          <a href="#" class="project__link" aria-label="查看 Aurora UI"></a>
+        </article>
+        <article class="project glass reveal" data-tilt>
+          <div class="project__thumb project__thumb--b"><span>📈</span></div>
+          <div class="project__body">
+            <h3>Pulse</h3>
+            <p>面向独立开发者的轻量分析面板，把数据讲成一个好懂的故事。</p>
+            <div class="project__tags"><span>TypeScript</span><span>Charts</span><span>SaaS</span></div>
+          </div>
+          <a href="#" class="project__link" aria-label="查看 Pulse"></a>
+        </article>
+        <article class="project glass reveal" data-tilt>
+          <div class="project__thumb project__thumb--c"><span>🤖</span></div>
+          <div class="project__body">
+            <h3>Fluffy Bot</h3>
+            <p>一个有点话痨、但很会安慰人的桌面小机器人（本站的吉祥物）。</p>
+            <div class="project__tags"><span>Electron</span><span>AI</span><span>Fun</span></div>
+          </div>
+          <a href="#" class="project__link" aria-label="查看 Fluffy Bot"></a>
+        </article>
+        <article class="project glass reveal" data-tilt>
+          <div class="project__thumb project__thumb--d"><span>✍️</span></div>
+          <div class="project__body">
+            <h3>Inkwell</h3>
+            <p>极简写作工具，去掉一切干扰，只留下你和文字。</p>
+            <div class="project__tags"><span>Next.js</span><span>Local-first</span></div>
+          </div>
+          <a href="#" class="project__link" aria-label="查看 Inkwell"></a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Journey -->
+    <section class="section journey" id="journey">
+      <div class="section__head reveal">
+        <span class="section__index">04</span>
+        <h2 class="section__title">历程</h2>
+        <p class="section__lead">一路走来的几个路标。</p>
+      </div>
+      <ol class="timeline">
+        <li class="timeline__item reveal">
+          <span class="timeline__dot"></span>
+          <div class="timeline__card glass">
+            <span class="timeline__year">2024 — 至今</span>
+            <h3>独立创造者 · Fluffy Robot</h3>
+            <p>做自己的产品，也帮别人把想法落地。自由、专注、可持续。</p>
+          </div>
+        </li>
+        <li class="timeline__item reveal">
+          <span class="timeline__dot"></span>
+          <div class="timeline__card glass">
+            <span class="timeline__year">2021 — 2024</span>
+            <h3>高级前端工程师 · 某科技公司</h3>
+            <p>主导设计系统建设，把交付效率提升了一倍多。</p>
+          </div>
+        </li>
+        <li class="timeline__item reveal">
+          <span class="timeline__dot"></span>
+          <div class="timeline__card glass">
+            <span class="timeline__year">2019 — 2021</span>
+            <h3>产品设计师 · 初创团队</h3>
+            <p>从 0 到 1 参与多款 App，学会在约束里跳舞。</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Contact -->
+    <section class="section contact" id="contact">
+      <div class="section__head reveal">
+        <span class="section__index">05</span>
+        <h2 class="section__title">一起聊聊</h2>
+        <p class="section__lead">有想法、有合作，或者只是想打个招呼？我都在。</p>
+      </div>
+      <div class="contact__wrap reveal">
+        <form class="contact__form glass" id="contactForm" novalidate>
+          <div class="field">
+            <label for="name">称呼</label>
+            <input id="name" name="name" type="text" placeholder="怎么称呼你？" required />
+          </div>
+          <div class="field">
+            <label for="email">邮箱</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field">
+            <label for="msg">想说的</label>
+            <textarea id="msg" name="msg" rows="4" placeholder="随便写点什么…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--block">发送 <span>→</span></button>
+          <p class="contact__hint" id="formHint"></p>
+        </form>
+        <aside class="contact__side">
+          <a class="chip" href="mailto:hi@fluffyrobot.dev">✉️ hi@fluffyrobot.dev</a>
+          <a class="chip" href="https://github.com/liu696233-byte" target="_blank" rel="noopener">🐙 GitHub</a>
+          <a class="chip" href="#" target="_blank" rel="noopener">𝕏 Twitter / X</a>
+          <a class="chip" href="#" target="_blank" rel="noopener">💼 领英</a>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__brand">🤖 FLUFFY ROBOT</span>
+      <p>用 💛 与 ☕ 手写于地球某处 · <span id="year"></span></p>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
