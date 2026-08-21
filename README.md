@@ -3,8 +3,8 @@
 一个有温度的创造者主页 —— 设计、工程与一点点温柔的科技。
 基于 **Vite + React 18** 构建，深色极光 + 玻璃拟态 + 柔和发光的高级质感。
 
-所有可编辑内容都抽离到 `public/content.json`，并用 **Decap CMS** 提供可视化后台，
-**不改代码、不重新构建**就能随时改文字、技能、项目、联系方式 —— 保存后自动触发 Pages 重建。
+所有可编辑内容都抽离到 `public/content.json`，并提供独立的 **可视化后台** `/admin`，
+**不改代码、不重新构建**就能随时改文字、技能、项目、联系方式 —— 保存后自动提交到 GitHub 并触发 Pages 重建。
 
 ## ✨ 特性
 
@@ -16,7 +16,7 @@
 - 📊 **技能进度条**（滚动到区块自动填充）
 - 🃏 **项目卡片 3D 悬浮**（鼠标跟随透视旋转）
 - 🌗 **深浅色主题切换**（记忆到 localStorage）
-- 📝 **内容可视化后台**（Decap CMS，GitHub 登录即可改）
+- 📝 **内容可视化后台**（静态页面，用 GitHub PAT 直接写回仓库）
 - 📱 **移动端自适应** + 汉堡菜单
 - ♿ 尊重 `prefers-reduced-motion`（关闭动画）
 
@@ -25,7 +25,7 @@
 - [React 18](https://react.dev/)
 - [Vite 5](https://vitejs.dev/)
 - 纯 CSS（无 UI 框架），变量驱动主题
-- [Decap CMS](https://decapcms.org/) 内容后台（静态、无服务器）
+- GitHub REST API（内容后台直接提交 `content.json`）
 - GitHub Actions 自动构建并部署到 GitHub Pages
 
 ## 🚀 本地开发
@@ -62,38 +62,32 @@ npm run preview
 ## 📝 随时改内容（可视化后台）
 
 站点内容由 `public/content.json` 驱动，React 在运行时读取并渲染。
-配合 `public/admin/` 下的 **Decap CMS**，你可以用 GitHub 账号登录，
-在 `https://<用户名>.github.io/fluffy-robot/admin/` 直接可视化编辑并保存 ——
-保存即向 `main` 提交，触发 Pages 重建，几秒后线上更新。
 
-### 首次启用（一次性，约 2 分钟）
+后台地址：`https://<用户名>.github.io/fluffy-robot/admin/`
 
-1. 打开 GitHub → 头像 → **Settings → Developer settings → OAuth Apps → New OAuth App**
-2. 填写：
-   - **Application name**：`fluffy-robot-cms`（随意）
-   - **Homepage URL**：`https://<用户名>.github.io/fluffy-robot/`
-   - **Authorization callback URL**：`https://<用户名>.github.io/fluffy-robot/admin/`
-   - 点 **Register application**
-3. 复制生成的 **Client ID**
-4. 打开 [`public/admin/config.yml`](public/admin/config.yml)，把
-   `client_id: REPLACE_WITH_OAUTH_CLIENT_ID` 替换成你的 Client ID
-5. 提交并推送，Pages 重建后即可使用后台
+### 首次使用
 
-> 后台本身不存储任何密码：登录走 GitHub OAuth，编辑内容直接写回仓库，
-> 全程无需任何后端服务器或数据库（这就是不用 Flask 的原因）。
+1. 准备一个 GitHub Personal Access Token：
+   - GitHub → 头像 → **Settings → Developer settings → Personal access tokens → Tokens (classic)**
+   - 生成 classic token，勾选 **`repo`** 权限
+   - 或者使用 fine-grained token，给本仓库 **Contents 读写** 权限
+2. 打开后台地址，粘贴 Token 登录
+3. 修改字段后点「保存并提交」，即可写回 `main` 分支
+4. GitHub Actions 会自动重新部署，1-2 分钟后线上更新
 
-### 日常使用
+> Token 只保存在浏览器 localStorage 中，不会上传到我方服务器。
+> 如果公用电脑，用完后点「退出登录」即可清除。
 
-- 访问 `<站点地址>/admin` → 用 GitHub 登录 → 选「主页内容」→ 改完点「Publish changes」
-- 想直接改文件也行：编辑 `public/content.json` 后提交即可
+### 直接改文件
+
+不想用后台也可以直接编辑 `public/content.json`，提交后同样会触发 Pages 重建。
 
 ## 🎨 自定义
 
 - **配色 / 主题变量**：`src/styles/style.css` 顶部的 `:root` 与 `[data-theme="light"]`
-- **文案 / 内容**：优先改 `public/content.json`（或通过后台）；结构由
-  [`public/admin/config.yml`](public/admin/config.yml) 定义
+- **文案 / 内容**：优先改 `public/content.json`（或通过后台）
 - **动效参数**：打字机速度在 `src/hooks/useTypewriter.js`，渐显阈值在 `src/hooks/useScrollReveal.js`
-- **想加字段**：先在 `content.json` 加键，再在 `config.yml` 对应 `fields` 里加一项，最后在组件里读取
+- **想加字段**：先在 `content.json` 加键，再在对应组件里读取，后台表单会自动识别（对象 / 数组 / 字符串）
 
 ## 📁 目录结构
 
@@ -105,9 +99,8 @@ npm run preview
 ├── .github/workflows/      # 自动部署到 Pages
 ├── public
 │   ├── content.json        # ⭐ 全部可编辑内容（后台即改这个文件）
-│   └── admin/              # Decap CMS 可视化后台
-│       ├── index.html
-│       └── config.yml      # 字段定义 + GitHub OAuth 配置
+│   └── admin/              # 可视化后台（纯静态，调用 GitHub API）
+│       └── index.html
 └── src
     ├── main.jsx
     ├── App.jsx             # 运行时 fetch content.json 并下发

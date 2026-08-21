@@ -1,13 +1,419 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex" />
-    <title>内容编辑器 · FLUFFY ROBOT</title>
-  </head>
-  <body>
-    <!-- Decap CMS：用 GitHub 账号登录后即可可视化编辑 content.json -->
-    <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>内容编辑器 · FLUFFY ROBOT</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --text: #11131a;
+      --muted: #5e6474;
+      --border: #e2e5ed;
+      --primary: #5b6df9;
+      --primary-dark: #424ff5;
+      --danger: #e13d3d;
+      --success: #16a34a;
+      --shadow: 0 12px 40px rgba(18, 20, 36, 0.08);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 40px 20px; }
+    header {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin-bottom: 28px;
+    }
+    h1 { margin: 0; font-size: 1.6rem; }
+    .muted { color: var(--muted); font-size: 0.9rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: none; border-radius: 10px; padding: 10px 18px;
+      font-size: 0.95rem; cursor: pointer; transition: transform .15s, opacity .15s;
+      text-decoration: none;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-ghost { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn-danger { background: #fff; color: var(--danger); border: 1px solid var(--border); }
+    .card {
+      background: var(--panel); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 24px; margin-bottom: 20px;
+    }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+    input, textarea, select {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 10px; font: inherit; background: #fff; color: var(--text);
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    .hint { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+    .error { color: var(--danger); background: #fff0f0; padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; white-space: pre-wrap; }
+    .success { color: var(--success); background: #f0fff4; padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .item { border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; background: #fafbff; }
+    .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .item-title { font-weight: 700; font-size: 0.95rem; }
+    .array-add { margin-top: 6px; }
+    .login-box { max-width: 520px; margin: 80px auto; }
+    .login-box input { margin-bottom: 12px; }
+    .token-field { position: relative; }
+    .token-field input { padding-right: 76px; }
+    .token-toggle {
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      background: transparent; border: 1px solid var(--border); border-radius: 6px;
+      padding: 4px 10px; font-size: 0.8rem; cursor: pointer;
+    }
+    .status { font-size: 0.85rem; color: var(--muted); }
+    .hidden { display: none; }
+    .footer-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+    code { background: #f0f2f8; padding: 2px 6px; border-radius: 6px; font-size: 0.85em; }
+    @media (max-width: 640px) {
+      .wrap { padding: 24px 16px; }
+      header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    const REPO = 'liu696233-byte/fluffy-robot';
+    const FILE_PATH = 'public/content.json';
+    const BRANCH = 'main';
+    const API = 'https://api.github.com';
+
+    const LS_TOKEN = 'fr_admin_token';
+    let state = { token: '', sha: null, content: null };
+
+    const $ = id => document.getElementById(id);
+
+    function utf8_to_b64(str) {
+      return window.btoa(unescape(encodeURIComponent(str)));
+    }
+    function b64_to_utf8(str) {
+      return decodeURIComponent(escape(window.atob(str)));
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function setView(html) { $('app').innerHTML = html; }
+
+    function renderLogin(error = '') {
+      setView(`
+        <div class="wrap login-box">
+          <div class="card">
+            <h1>内容编辑器</h1>
+            <p class="muted">登录后可直接修改主页内容，保存后会自动提交到 GitHub 并触发 Pages 重建。</p>
+            ${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}
+            <div class="form-group">
+              <label for="token">GitHub Personal Access Token</label>
+              <div class="token-field">
+                <input type="password" id="token" placeholder="ghp_... 或 github_pat_..." autocomplete="off" />
+                <button class="token-toggle" id="toggleToken" type="button">显示</button>
+              </div>
+              <div class="hint">
+                需要 classic token 并勾选 <code>repo</code> 权限，或 fine-grained token 拥有此仓库 Contents 读写权限。
+                Token 只保存在本机浏览器 localStorage 中，不会上传到我方服务器。
+              </div>
+            </div>
+            <button class="btn btn-primary" id="loginBtn">登录并加载内容</button>
+          </div>
+        </div>
+      `);
+      const inp = $('token');
+      inp.focus();
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+      $('loginBtn').addEventListener('click', doLogin);
+      $('toggleToken').addEventListener('click', () => {
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+        $('toggleToken').textContent = inp.type === 'password' ? '显示' : '隐藏';
+      });
+    }
+
+    async function doLogin() {
+      const token = $('token').value.trim();
+      if (!token) { renderLogin('请输入 Token'); return; }
+      state.token = token;
+      try {
+        const data = await loadContent();
+        state.sha = data.sha;
+        state.content = data.content;
+        localStorage.setItem(LS_TOKEN, token);
+        renderEditor();
+      } catch (e) {
+        state.token = '';
+        renderLogin('加载失败：' + e.message);
+      }
+    }
+
+    async function loadContent() {
+      const res = await fetch(`${API}/repos/${REPO}/contents/${encodeURIComponent(FILE_PATH)}?ref=${BRANCH}`, {
+        headers: { 'Authorization': `token ${state.token}`, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      const text = await res.text();
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}\n${text}`);
+      const data = JSON.parse(text);
+      return { sha: data.sha, content: JSON.parse(b64_to_utf8(data.content)) };
+    }
+
+    function renderEditor() {
+      setView(`
+        <div class="wrap">
+          <header>
+            <div>
+              <h1>内容编辑器</h1>
+              <div class="status">仓库：${REPO} · 分支：${BRANCH}</div>
+            </div>
+            <div class="toolbar">
+              <a class="btn btn-ghost" href="../" target="_blank">打开前台</a>
+              <button class="btn btn-ghost" id="rawBtn">查看/编辑原始 JSON</button>
+              <button class="btn btn-danger" id="logoutBtn">退出登录</button>
+            </div>
+          </header>
+          <div id="message"></div>
+          <div id="rawBox" class="card hidden">
+            <div class="section-title">原始 JSON</div>
+            <textarea id="rawJson" rows="20"></textarea>
+            <div class="toolbar" style="margin-top:12px">
+              <button class="btn btn-ghost" id="closeRawBtn">关闭</button>
+              <button class="btn btn-primary" id="applyRawBtn">应用原始 JSON</button>
+            </div>
+          </div>
+          <form id="editorForm"></form>
+          <div class="footer-actions">
+            <button class="btn btn-primary" id="saveBtn" type="button">保存并提交</button>
+          </div>
+        </div>
+      `);
+
+      $('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem(LS_TOKEN);
+        state.token = ''; state.content = null; state.sha = null;
+        renderLogin();
+      });
+
+      $('rawBtn').addEventListener('click', () => {
+        $('rawJson').value = JSON.stringify(state.content, null, 2);
+        $('rawBox').classList.remove('hidden');
+      });
+      $('closeRawBtn').addEventListener('click', () => $('rawBox').classList.add('hidden'));
+      $('applyRawBtn').addEventListener('click', () => {
+        try {
+          state.content = JSON.parse($('rawJson').value);
+          $('editorForm').innerHTML = buildForm(state.content);
+          $('rawBox').classList.add('hidden');
+          showMsg('已应用原始 JSON，记得保存提交', 'success');
+        } catch (e) {
+          showMsg('JSON 格式错误：' + e.message, 'error');
+        }
+      });
+
+      $('editorForm').innerHTML = buildForm(state.content);
+      $('saveBtn').addEventListener('click', doSave);
+    }
+
+    function showMsg(text, type) {
+      $('message').innerHTML = `<div class="${type}">${escapeHtml(text)}</div>`;
+    }
+
+    function clearMsg() { $('message').innerHTML = ''; }
+
+    function buildForm(obj, path = '') {
+      if (Array.isArray(obj)) {
+        if (obj.every(i => typeof i !== 'object' || i === null)) {
+          return `
+            <div class="form-group" data-path="${path}">
+              <label>${labelize(path)}</label>
+              <textarea data-type="string-array" data-path="${path}">${obj.map(escapeHtml).join('\n')}</textarea>
+              <div class="hint">每行一项</div>
+            </div>
+          `;
+        }
+        return `
+          <div class="form-group" data-path="${path}">
+            <label>${labelize(path)}</label>
+            <div data-type="object-array" data-path="${path}">
+              ${obj.map((item, idx) => `
+                <div class="item" data-idx="${idx}">
+                  <div class="item-header">
+                    <span class="item-title">#${idx + 1}</span>
+                    <button class="btn btn-danger" type="button" data-remove-array-item>删除</button>
+                  </div>
+                  ${buildForm(item, `${path}[${idx}]`)}
+                </div>
+              `).join('')}
+            </div>
+            <button class="btn btn-ghost array-add" type="button" data-add-array-item>+ 添加一项</button>
+          </div>
+        `;
+      }
+      if (obj !== null && typeof obj === 'object') {
+        return `
+          <div class="card" data-path="${path}">
+            <div class="section-title">${labelize(path) || '内容'}</div>
+            ${Object.keys(obj).map(k => `
+              <div data-key="${k}">
+                ${buildForm(obj[k], path ? `${path}.${k}` : k)}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+      return `
+        <div class="form-group" data-path="${path}">
+          <label>${labelize(path)}</label>
+          <input type="text" value="${escapeHtml(obj === null || obj === undefined ? '' : obj)}" data-type="primitive" data-path="${path}" />
+        </div>
+      `;
+    }
+
+    function labelize(path) {
+      const parts = path.replace(/\[\d+\]/g, '').split('.').filter(Boolean);
+      const key = parts[parts.length - 1] || path;
+      const map = {
+        title: '标题', subtitle: '副标题', tagline: '标语',
+        description: '描述', paragraphs: '段落', quote: '引用',
+        skills: '技能', work: '作品', journey: '历程', contact: '联系',
+        footer: '页脚', nav: '导航', hero: '首屏', about: '关于',
+        name: '名称', level: '等级', percent: '百分比', tags: '标签',
+        links: '链接', image: '图片', year: '年份', org: '机构/公司',
+        url: '链接', icon: '图标类名', href: '锚点', label: '显示文字',
+        stats: '数据', value: '数值', suffix: '后缀', cta: '按钮文字',
+        ctaLink: '按钮链接', email: '邮箱', copyText: '复制提示',
+        navTitle: '导航标题', social: '社交链接', copyToast: '复制成功提示',
+        availability: '可用状态', summary: '简介'
+      };
+      return map[key] || key;
+    }
+
+    function gather(root) {
+      return gatherValue($('#editorForm > [data-path=""]') || $('#editorForm').firstElementChild);
+    }
+
+    function gatherValue(el) {
+      if (!el) return null;
+      const path = el.dataset.path;
+
+      const inp = el.querySelector(':scope > input[data-type="primitive"]');
+      if (inp) return inp.value;
+
+      const ta = el.querySelector(':scope > textarea[data-type="string-array"]');
+      if (ta) return ta.value.split('\n').map(s => s.trim()).filter(s => s !== '');
+
+      const arr = el.querySelector(':scope > div[data-type="object-array"]');
+      if (arr) {
+        return Array.from(arr.querySelectorAll(':scope > .item')).map(item => {
+          const child = item.querySelector(':scope > [data-path]');
+          return gatherValue(child);
+        });
+      }
+
+      const keys = el.querySelectorAll(':scope > [data-key] > [data-path]');
+      if (keys.length) {
+        const obj = {};
+        el.querySelectorAll(':scope > [data-key]').forEach(wrap => {
+          const k = wrap.dataset.key;
+          const child = wrap.querySelector(':scope > [data-path]');
+          obj[k] = gatherValue(child);
+        });
+        return obj;
+      }
+      return null;
+    }
+
+    document.addEventListener('click', e => {
+      if (e.target.matches('[data-remove-array-item]')) {
+        const item = e.target.closest('.item');
+        item.remove();
+      }
+      if (e.target.matches('[data-add-array-item]')) {
+        const container = e.target.previousElementSibling;
+        const path = container.dataset.path;
+        const items = container.querySelectorAll(':scope > .item');
+        const last = items[items.length - 1];
+        const templateObj = last ? gatherValue(last.querySelector(':scope > [data-path]')) : {};
+        const idx = items.length;
+        const newPath = `${path}[${idx}]`;
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.dataset.idx = idx;
+        div.innerHTML = `
+          <div class="item-header">
+            <span class="item-title">#${idx + 1}</span>
+            <button class="btn btn-danger" type="button" data-remove-array-item>删除</button>
+          </div>
+          ${buildForm(templateObj, newPath)}
+        `;
+        container.appendChild(div);
+      }
+    });
+
+    async function doSave() {
+      clearMsg();
+      const btn = $('saveBtn');
+      btn.textContent = '保存中…'; btn.disabled = true;
+      try {
+        const newContent = gather();
+        const message = 'cms: 更新内容 (' + new Date().toLocaleString('zh-CN') + ')';
+        const body = {
+          message,
+          content: utf8_to_b64(JSON.stringify(newContent, null, 2)),
+          sha: state.sha,
+          branch: BRANCH
+        };
+        const res = await fetch(`${API}/repos/${REPO}/contents/${encodeURIComponent(FILE_PATH)}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${state.token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+        const text = await res.text();
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}\n${text}`);
+        const data = JSON.parse(text);
+        state.sha = data.content.sha;
+        state.content = newContent;
+        showMsg('保存成功！GitHub 已收到提交，Pages 将在 1-2 分钟后自动重建。', 'success');
+      } catch (e) {
+        showMsg('保存失败：' + e.message, 'error');
+      } finally {
+        btn.textContent = '保存并提交'; btn.disabled = false;
+      }
+    }
+
+    async function init() {
+      const savedToken = localStorage.getItem(LS_TOKEN);
+      if (savedToken) {
+        state.token = savedToken;
+        try {
+          const data = await loadContent();
+          state.sha = data.sha;
+          state.content = data.content;
+          renderEditor();
+          return;
+        } catch (e) {
+          localStorage.removeItem(LS_TOKEN);
+          state.token = '';
+        }
+      }
+      renderLogin();
+    }
+
+    init();
+  </script>
+</body>
 </html>
