@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function Contact() {
+export default function Contact({ data }) {
   const [hint, setHint] = useState({ text: '', type: '' })
 
   const onSubmit = (e) => {
@@ -17,18 +17,18 @@ export default function Contact() {
 
     const subject = encodeURIComponent(`来自主页的留言 · ${name}`)
     const body = encodeURIComponent(`称呼：${name}\n邮箱：${email}\n\n${msg}`)
-    window.location.href = `mailto:hi@fluffyrobot.dev?subject=${subject}&body=${body}`
+    window.location.href = `mailto:${data.email}?subject=${subject}&body=${body}`
 
-    setHint({ text: '已为你打开邮件客户端 ✉️ 没弹出来？直接发到 hi@fluffyrobot.dev 就行。', type: 'ok' })
+    setHint({ text: `已为你打开邮件客户端 ✉️ 没弹出来？直接发到 ${data.email} 就行。`, type: 'ok' })
     form.reset()
   }
 
   return (
     <section className="section contact" id="contact">
       <div className="section__head reveal">
-        <span className="section__index">05</span>
-        <h2 className="section__title">一起聊聊</h2>
-        <p className="section__lead">有想法、有合作，或者只是想打个招呼？我都在。</p>
+        <span className="section__index">{data.index}</span>
+        <h2 className="section__title">{data.title}</h2>
+        <p className="section__lead">{data.lead}</p>
       </div>
 
       <div className="contact__wrap reveal">
@@ -54,18 +54,11 @@ export default function Contact() {
         </form>
 
         <aside className="contact__side">
-          <a className="chip" href="mailto:hi@fluffyrobot.dev">
-            ✉️ hi@fluffyrobot.dev
-          </a>
-          <a className="chip" href="https://github.com/liu696233-byte" target="_blank" rel="noopener">
-            🐙 GitHub
-          </a>
-          <a className="chip" href="#" target="_blank" rel="noopener">
-            𝕏 Twitter / X
-          </a>
-          <a className="chip" href="#" target="_blank" rel="noopener">
-            💼 领英
-          </a>
+          {data.links.map((l) => (
+            <a className="chip" href={l.href} target="_blank" rel="noopener" key={l.label}>
+              {l.icon} {l.label}
+            </a>
+          ))}
         </aside>
       </div>
     </section>

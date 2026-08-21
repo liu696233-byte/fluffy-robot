@@ -331,3 +331,9 @@ section[id] { scroll-margin-top: 88px; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ---------- 内容加载占位 ---------- */
+.booting {
+  min-height: 60vh; display: grid; place-items: center;
+  color: var(--text-dim); font-family: var(--font-display); letter-spacing: 0.04em;
+}

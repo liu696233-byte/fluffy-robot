@@ -1,0 +1,182 @@
+# Decap CMS 配置
+# 文档：https://decapcms.org/docs/configuration-options/
+# 注意：backend.github.client_id 需替换为你自己的 GitHub OAuth App 的 Client ID
+# （注册步骤见 README 的「内容后台」一节）
+
+backend:
+  name: github
+  repo: liu696233-byte/fluffy-robot
+  branch: main
+  client_id: REPLACE_WITH_OAUTH_CLIENT_ID
+
+# 直接保存即提交到 main（个人站点，省去草稿工作流）
+# publish_mode: editorial_workflow
+
+media_folder: "public/images"
+public_folder: "/images"
+
+locale: "zh"
+
+collections:
+  - name: "site"
+    label: "站点内容"
+    files:
+      - name: "content"
+        label: "主页内容"
+        file: "public/content.json"
+        fields:
+          - name: meta
+            label: "站点元信息"
+            widget: object
+            fields:
+              - { name: siteTitle, label: "浏览器标题", widget: string }
+              - name: nav
+                label: "导航菜单"
+                widget: list
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: href, label: "锚点(#xxx)", widget: string }
+                  - { name: label, label: "文字", widget: string }
+
+          - name: hero
+            label: "首屏 Hero"
+            widget: object
+            fields:
+              - { name: eyebrow, label: "小标题", widget: string }
+              - { name: titleLine, label: "主标题行", widget: string }
+              - name: phrases
+                label: "循环打字标语"
+                widget: list
+                summary: "{{value}}"
+                value_type: string
+              - { name: subtitle, label: "副标题", widget: string }
+              - name: ctaPrimary
+                label: "主按钮"
+                widget: object
+                fields:
+                  - { name: text, label: "文字", widget: string }
+                  - { name: href, label: "链接(#xxx)", widget: string }
+              - name: ctaSecondary
+                label: "次按钮"
+                widget: object
+                fields:
+                  - { name: text, label: "文字", widget: string }
+                  - { name: href, label: "链接(#xxx)", widget: string }
+              - name: stats
+                label: "统计数据"
+                widget: list
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: value, label: "数字", widget: number }
+                  - { name: label, label: "说明", widget: string }
+
+          - name: about
+            label: "关于我"
+            widget: object
+            fields:
+              - { name: index, label: "序号", widget: string }
+              - { name: title, label: "标题", widget: string }
+              - { name: lead, label: "引导语", widget: string }
+              - name: card
+                label: "名片卡片"
+                widget: object
+                fields:
+                  - { name: emoji, label: "头像 emoji", widget: string }
+                  - { name: name, label: "昵称", widget: string }
+                  - { name: desc, label: "描述", widget: string }
+                  - name: tags
+                    label: "标签"
+                    widget: list
+                    summary: "{{value}}"
+                    value_type: string
+              - name: text
+                label: "正文段落"
+                widget: list
+                summary: "{{value}}"
+                value_type: string
+              - name: facts
+                label: "事实条目"
+                widget: list
+                summary: "{{fields.value}}"
+                fields:
+                  - { name: icon, label: "图标", widget: string }
+                  - { name: value, label: "内容", widget: string }
+
+          - name: skills
+            label: "技能栈"
+            widget: object
+            fields:
+              - { name: index, label: "序号", widget: string }
+              - { name: title, label: "标题", widget: string }
+              - { name: lead, label: "引导语", widget: string }
+              - name: items
+                label: "技能项"
+                widget: list
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: icon, label: "图标", widget: string }
+                  - { name: title, label: "名称", widget: string }
+                  - { name: percent, label: "百分比(0-100)", widget: number }
+                  - { name: desc, label: "描述", widget: string }
+
+          - name: work
+            label: "精选作品"
+            widget: object
+            fields:
+              - { name: index, label: "序号", widget: string }
+              - { name: title, label: "标题", widget: string }
+              - { name: lead, label: "引导语", widget: string }
+              - name: items
+                label: "项目"
+                widget: list
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: title, label: "名称", widget: string }
+                  - { name: emoji, label: "图标 emoji", widget: string }
+                  - { name: variant, label: "配色(a/b/c/d)", widget: string }
+                  - { name: desc, label: "描述", widget: string }
+                  - name: tags
+                    label: "标签"
+                    widget: list
+                    summary: "{{value}}"
+                    value_type: string
+                  - { name: href, label: "链接(# 或 http)", widget: string }
+
+          - name: journey
+            label: "历程"
+            widget: object
+            fields:
+              - { name: index, label: "序号", widget: string }
+              - { name: title, label: "标题", widget: string }
+              - { name: lead, label: "引导语", widget: string }
+              - name: items
+                label: "时间线条目"
+                widget: list
+                summary: "{{fields.year}}"
+                fields:
+                  - { name: year, label: "年份", widget: string }
+                  - { name: title, label: "标题", widget: string }
+                  - { name: desc, label: "描述", widget: string }
+
+          - name: contact
+            label: "联系"
+            widget: object
+            fields:
+              - { name: index, label: "序号", widget: string }
+              - { name: title, label: "标题", widget: string }
+              - { name: lead, label: "引导语", widget: string }
+              - { name: email, label: "邮箱", widget: string }
+              - name: links
+                label: "社交链接"
+                widget: list
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: icon, label: "图标", widget: string }
+                  - { name: label, label: "文字", widget: string }
+                  - { name: href, label: "链接", widget: string }
+
+          - name: footer
+            label: "页脚"
+            widget: object
+            fields:
+              - { name: brand, label: "品牌文字", widget: string }

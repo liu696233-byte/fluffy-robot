@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 
 // 项目卡片 3D 倾斜：鼠标在卡片上移动时产生透视旋转（仅 hover 设备）
-export default function useTilt() {
+// deps：内容异步加载完成后需重新绑定，传 [content] 即可
+export default function useTilt(deps = []) {
   useEffect(() => {
     if (!window.matchMedia('(hover: hover)').matches) return
     const cards = document.querySelectorAll('[data-tilt]')
@@ -26,5 +27,5 @@ export default function useTilt() {
     })
 
     return () => cleanups.forEach((fn) => fn())
-  }, [])
+  }, deps)
 }

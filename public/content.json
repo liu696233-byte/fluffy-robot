@@ -1,0 +1,122 @@
+{
+  "meta": {
+    "siteTitle": "FLUFFY ROBOT · Yuan",
+    "nav": [
+      { "href": "#home", "label": "首页" },
+      { "href": "#about", "label": "关于" },
+      { "href": "#skills", "label": "技能" },
+      { "href": "#work", "label": "作品" },
+      { "href": "#journey", "label": "历程" },
+      { "href": "#contact", "label": "联系" }
+    ]
+  },
+  "hero": {
+    "eyebrow": "// 你好，我是 Yuan",
+    "titleLine": "我用代码与设计并存",
+    "phrases": ["有温度的产品", "顺滑的体验", "会发光的交互", "温柔的科技"],
+    "subtitle": "一个有温度的创造者。在产品体验、前端工程与交互设计之间，造一些让人会心一笑的、温柔的科技。",
+    "ctaPrimary": { "text": "看看作品", "href": "#work" },
+    "ctaSecondary": { "text": "一起聊聊", "href": "#contact" },
+    "stats": [
+      { "value": 6, "label": "年经验" },
+      { "value": 42, "label": "个项目" },
+      { "value": 18, "label": "开源库" },
+      { "value": 99, "label": "% 咖啡驱动" }
+    ]
+  },
+  "about": {
+    "index": "01",
+    "title": "关于我",
+    "lead": "相信技术应当温柔，复杂应当被化简。",
+    "card": {
+      "emoji": "🤖",
+      "name": "Yuan · 创造者",
+      "desc": "从一行 CSS 到一整套设计系统，我享受把模糊的想法打磨成顺滑体验的全过程。白天写工程，夜里画草图。",
+      "tags": ["产品思维", "前端工程", "动效设计", "设计系统"]
+    },
+    "text": [
+      "我喜欢把「难用」变成「理所应当」。过去几年里，我做过消费级 App、开发者工具和一堆奇怪但可爱的周末项目。",
+      "现在，我把大部分精力放在 Fluffy Robot —— 一个关于「让科技更靠近人」的小实验场。"
+    ],
+    "facts": [
+      { "icon": "🌍 坐标", "value": "地球 · 远程优先" },
+      { "icon": "🛠 常用", "value": "TypeScript · React · Figma" },
+      { "icon": "💡 信条", "value": "少即是多，慢即是快" }
+    ]
+  },
+  "skills": {
+    "index": "02",
+    "title": "技能栈",
+    "lead": "不追求全栈通才，只把擅长的事做到顺手。",
+    "items": [
+      { "icon": "⚡", "title": "前端工程", "percent": 92, "desc": "React · TypeScript · Vite · 动效与性能优化" },
+      { "icon": "🎨", "title": "产品设计", "percent": 88, "desc": "Figma · 设计系统 · 交互原型 · 可用性" },
+      { "icon": "🧠", "title": "体验策略", "percent": 80, "desc": "信息架构 · 用户旅程 · 数据驱动迭代" },
+      { "icon": "🔧", "title": "工程化", "percent": 76, "desc": "Node · CI/CD · 组件库 · 文档体系" }
+    ]
+  },
+  "work": {
+    "index": "03",
+    "title": "精选作品",
+    "lead": "一些我乐意拿出来讲的项目。",
+    "items": [
+      {
+        "title": "Aurora UI",
+        "emoji": "🌌",
+        "variant": "a",
+        "desc": "一套以「光」为灵感的玻璃拟态组件库，开箱即用的动效与主题。",
+        "tags": ["React", "CSS", "Design System"],
+        "href": "#"
+      },
+      {
+        "title": "Pulse",
+        "emoji": "📈",
+        "variant": "b",
+        "desc": "面向独立开发者的轻量分析面板，把数据讲成一个好懂的故事。",
+        "tags": ["TypeScript", "Charts", "SaaS"],
+        "href": "#"
+      },
+      {
+        "title": "Fluffy Bot",
+        "emoji": "🤖",
+        "variant": "c",
+        "desc": "一个有点话痨、但很会安慰人的桌面小机器人（本站的吉祥物）。",
+        "tags": ["Electron", "AI", "Fun"],
+        "href": "#"
+      },
+      {
+        "title": "Inkwell",
+        "emoji": "✍️",
+        "variant": "d",
+        "desc": "极简写作工具，去掉一切干扰，只留下你和文字。",
+        "tags": ["Next.js", "Local-first"],
+        "href": "#"
+      }
+    ]
+  },
+  "journey": {
+    "index": "04",
+    "title": "历程",
+    "lead": "一路走来的几个路标。",
+    "items": [
+      { "year": "2024 — 至今", "title": "独立创造者 · Fluffy Robot", "desc": "做自己的产品，也帮别人把想法落地。自由、专注、可持续。" },
+      { "year": "2021 — 2024", "title": "高级前端工程师 · 某科技公司", "desc": "主导设计系统建设，把交付效率提升了一倍多。" },
+      { "year": "2019 — 2021", "title": "产品设计师 · 初创团队", "desc": "从 0 到 1 参与多款 App，学会在约束里跳舞。" }
+    ]
+  },
+  "contact": {
+    "index": "05",
+    "title": "一起聊聊",
+    "lead": "有想法、有合作，或者只是想打个招呼？我都在。",
+    "email": "hi@fluffyrobot.dev",
+    "links": [
+      { "icon": "✉️", "label": "hi@fluffyrobot.dev", "href": "mailto:hi@fluffyrobot.dev" },
+      { "icon": "🐙", "label": "GitHub", "href": "https://github.com/liu696233-byte" },
+      { "icon": "𝕏", "label": "Twitter / X", "href": "#" },
+      { "icon": "💼", "label": "领英", "href": "#" }
+    ]
+  },
+  "footer": {
+    "brand": "🤖 FLUFFY ROBOT"
+  }
+}

@@ -1,15 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-const LINKS = [
-  { href: '#home', label: '首页' },
-  { href: '#about', label: '关于' },
-  { href: '#skills', label: '技能' },
-  { href: '#work', label: '作品' },
-  { href: '#journey', label: '历程' },
-  { href: '#contact', label: '联系' },
-]
-
-export default function Navbar({ theme, onToggleTheme }) {
+export default function Navbar({ theme, onToggleTheme, nav }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const navRef = useRef(null)
@@ -53,7 +44,7 @@ export default function Navbar({ theme, onToggleTheme }) {
       </a>
 
       <nav className={`nav__links${open ? ' is-open' : ''}`} id="navLinks">
-        {LINKS.map((l) => (
+        {nav.map((l) => (
           <a
             key={l.href}
             href={l.href}
