@@ -65,6 +65,7 @@ strong { font-weight: 600; }
   transition: opacity 0.6s var(--ease), visibility 0.6s;
 }
 .preloader.is-done { opacity: 0; visibility: hidden; }
+.preloader__inner { display: grid; place-items: center; }
 .preloader__robot { font-size: 56px; animation: float 2s ease-in-out infinite; }
 .preloader__bar {
   margin-top: 18px; width: 160px; height: 4px; border-radius: 99px;
@@ -159,6 +160,7 @@ strong { font-weight: 600; }
 
 /* ---------- Layout ---------- */
 main { position: relative; z-index: 2; }
+section[id] { scroll-margin-top: 88px; }
 .section { max-width: var(--maxw); margin: 0 auto; padding: clamp(80px, 12vh, 140px) clamp(20px, 5vw, 56px); }
 .section__head { margin-bottom: 54px; }
 .section__index {
@@ -297,7 +299,9 @@ main { position: relative; z-index: 2; }
   transition: border-color 0.25s, box-shadow 0.25s; resize: vertical;
 }
 .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: var(--glow); }
-.contact__hint { font-size: 13.5px; min-height: 18px; color: var(--accent-2); }
+.contact__hint { font-size: 13.5px; min-height: 18px; }
+.contact__hint.is-ok { color: var(--accent-2); }
+.contact__hint.is-error { color: var(--accent-3); }
 .contact__side { display: grid; gap: 12px; }
 .chip { padding: 14px 18px; border-radius: var(--radius-sm); background: var(--surface);
   border: 1px solid var(--border); color: var(--text-soft); font-size: 15px; transition: 0.25s var(--ease); }

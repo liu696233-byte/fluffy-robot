@@ -1,50 +1,81 @@
 # 🤖 FLUFFY ROBOT · 个人主页
 
-一个用纯静态技术打造的高级感个人主页 —— 深色极光背景、玻璃拟态卡片、打字机动效、滚动渐显、技能进度动画、项目卡片悬浮发光，并支持深浅色切换。零依赖、零构建，打开即用。
+一个有温度的创造者主页 —— 设计、工程与一点点温柔的科技。
+基于 **Vite + React 18** 构建，深色极光 + 玻璃拟态 + 柔和发光的高级质感。
 
 ## ✨ 特性
 
-- **极光动态背景**：纯 CSS 渐变光球 + 网格 + 噪点，性能友好
-- **玻璃拟态**：半透明模糊卡片，质感通透
-- **打字机 Hero**：循环展示多种「身份」标语
-- **滚动渐显**：`IntersectionObserver` 驱动，元素进入视口才动画
-- **数字计数 & 技能进度条**：进入视口自动填充
-- **项目卡片 3D 悬浮**：跟随鼠标轻微倾斜发光
-- **深浅色主题**：一键切换，记忆到 `localStorage`
-- **响应式**：桌面 / 平板 / 手机自适应
-- **可访问性**：尊重 `prefers-reduced-motion`，键盘与读屏友好
+- 🌌 **极光动态背景**（多色光斑漂浮 + 网格 + 噪点）
+- 🪟 **玻璃拟态卡片**（backdrop-filter 毛玻璃）
+- ⌨️ **打字机 Hero**（循环展示身份标语）
+- 📜 **滚动渐显**（IntersectionObserver）
+- 🔢 **数字计数动画**（进入视口才启动）
+- 📊 **技能进度条**（滚动到区块自动填充）
+- 🃏 **项目卡片 3D 悬浮**（鼠标跟随透视旋转）
+- 🌗 **深浅色主题切换**（记忆到 localStorage）
+- 📱 **移动端自适应** + 汉堡菜单
+- ♿ 尊重 `prefers-reduced-motion`（关闭动画）
 
-## 🗂 目录结构
+## 🧱 技术栈
 
-```
-.
-├── index.html            # 页面结构
-├── assets/
-│   ├── css/style.css     # 全部样式与动效
-│   └── js/app.js         # 交互逻辑
-└── README.md
-```
+- [React 18](https://react.dev/)
+- [Vite 5](https://vitejs.dev/)
+- 纯 CSS（无 UI 框架），变量驱动主题
+- GitHub Actions 自动构建并部署到 GitHub Pages
 
-## 🚀 本地预览
-
-直接用浏览器打开 `index.html` 即可；或起一个本地服务：
+## 🚀 本地开发
 
 ```bash
-python -m http.server 8000
-# 然后访问 http://localhost:8000
+# 安装依赖
+npm install
+
+# 启动开发服务器（默认 http://localhost:5173）
+npm run dev
+
+# 生产构建（产物在 dist/）
+npm run build
+
+# 本地预览构建产物
+npm run preview
 ```
+
+## ☁️ 部署到 GitHub Pages
+
+仓库已配置 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)：
+推送 `main` 分支会自动构建并发布到 GitHub Pages。
+
+首次启用：
+
+1. 仓库 → **Settings → Pages**
+2. **Build and deployment → Source** 选择 **GitHub Actions**
+3. 推送代码后，Actions 会自动跑；完成后页面地址为
+   `https://<用户名>.github.io/fluffy-robot/`
+
+> 部署路径由 `vite.config.js` 的 `base: '/fluffy-robot/'` 决定，
+> 如果改了仓库名，记得同步修改这个 base。
 
 ## 🎨 自定义
 
-- **文案 / 作品 / 技能**：直接改 `index.html` 里的对应区块
-- **配色**：改 `assets/css/style.css` 顶部 `:root` 里的 CSS 变量（`--accent`、`--grad` 等）
-- **联系方式**：改 `index.html` 底部 `#contact` 区块的链接与邮箱
+- **配色 / 主题变量**：`src/styles/style.css` 顶部的 `:root` 与 `[data-theme="light"]`
+- **文案 / 内容**：各区块组件在 `src/components/` 下（Hero、About、Skills、Work、Journey、Contact）
+- **数据驱动**：技能、项目、历程均用组件内的数组定义，改数组即可
+- **动效参数**：打字机速度在 `src/hooks/useTypewriter.js`，渐显阈值在 `src/hooks/useScrollReveal.js`
 
-## 🌐 部署到 GitHub Pages
+## 📁 目录结构
 
-1. 推送到 `main` 分支
-2. 仓库 → Settings → Pages → Source 选 `main` / 根目录
-3. 稍等片刻即可通过 `https://<user>.github.io/<repo>/` 访问
+```
+.
+├── index.html              # Vite 入口
+├── vite.config.js          # 含 base（GitHub Pages 子路径）
+├── package.json
+├── .github/workflows/      # 自动部署到 Pages
+└── src
+    ├── main.jsx
+    ├── App.jsx
+    ├── styles/style.css
+    ├── hooks/              # useTheme / useTypewriter / useScrollReveal / useTilt
+    └── components/         # 各页面区块组件
+```
 
 ---
 

@@ -1,10 +1,11 @@
+# 依赖与构建产物（Vite + React）
+node_modules/
+dist/
+.cache/
+*.local
+
 # 本地/编辑器数据
 .workbuddy/
 .DS_Store
 Thumbs.db
 *.log
-
-# 依赖与构建产物（本项目为零构建，留作扩展）
-node_modules/
-dist/
-.cache/
