@@ -7,7 +7,7 @@ backend:
   name: github
   repo: liu696233-byte/fluffy-robot
   branch: main
-  client_id: REPLACE_WITH_OAUTH_CLIENT_ID
+  client_id: Ov23liAtxi11ynurRETg
 
 # 直接保存即提交到 main（个人站点，省去草稿工作流）
 # publish_mode: editorial_workflow
